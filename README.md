@@ -8,7 +8,7 @@ This package is installed locally (not published to Typst Universe).
 
 ```sh
 mkdir -p ~/.local/share/typst/packages/local/v_utils/
-git clone https://github.com/yourusername/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0
+git clone https://github.com/valeratrades/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0
 ```
 
 ### Add to your project
@@ -27,12 +27,12 @@ Import the library in your Typst documents:
 ```typst
 #import "@local/v_utils:0.1.0": *
 
-#show: math_notes
+#show: math_notes_prelude
 ```
 
 ## Available Presets
 
-### `math_notes()`
+### `math_notes_prelude(doc)`
 Optimized settings for mathematical note-taking:
 - Zero vertical margins
 - Breakable math equations
