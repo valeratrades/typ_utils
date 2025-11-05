@@ -8,7 +8,7 @@ This package is installed locally (not published to Typst Universe).
 
 ```sh
 mkdir -p ~/.local/share/typst/packages/local/v_utils/
-git clone https://github.com/valeratrades/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0
+git clone https://github.com/valeratrades/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0 # atm typst requires version provision when importing a package, so we always install as 0.1.0, irregardless of the actual version. 
 ```
 
 ### Add to your project
@@ -25,9 +25,7 @@ v_utils = { version = "0.1.0", registry = "local" }
 Import the library in your Typst documents:
 
 ```typst
-#import "@local/v_utils:0.1.0": *
-
-#show: math_notes_prelude
+#import "@local/v_utils:0.1.0": math_notes_prelude; #show: math_notes_prelude
 ```
 
 ## Available Presets
