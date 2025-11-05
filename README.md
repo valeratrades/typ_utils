@@ -2,32 +2,35 @@
 
 Shared settings and presets for Typst projects.
 
+## Installation
+
+This package is installed locally (not published to Typst Universe).
+
+```sh
+mkdir -p ~/.local/share/typst/packages/local/v_utils/
+git clone https://github.com/yourusername/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0
+```
+
+### Add to your project
+
+In your project's `typst.toml`:
+
+```toml
+[dependencies]
+v_utils = { version = "0.1.0", registry = "local" }
+```
+
 ## Usage
 
-Import the library directly in your Typst documents. It's recommended to use the `@preview` namespace with a specific version or `latest`:
+Import the library in your Typst documents:
 
 ```typst
-#import "@preview/v_utils:0.1.0": *
-
-#show: math_notes
-
-// Your document content here
-```
-
-Or use the latest version automatically:
-
-```typst
-#import "@preview/v_utils": *
+#import "@local/v_utils:0.1.0": *
 
 #show: math_notes
 ```
-
-This allows you to update to the latest standards across all your projects by simply bumping the version number.
 
 ## Available Presets
-
-### `test()`
-Basic test preset demonstrating the structure.
 
 ### `math_notes()`
 Optimized settings for mathematical note-taking:
@@ -43,4 +46,3 @@ Edit `lib.typ` and add new functions following the existing pattern:
 #let your_preset() = {
   // Your settings here
 }
-```
