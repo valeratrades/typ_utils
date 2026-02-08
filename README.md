@@ -8,6 +8,7 @@ This package is installed locally (not published to Typst Universe).
 
 ```sh
 mkdir -p ~/.local/share/typst/packages/local/v_utils/
+rm -rf ~/.local/share/typst/packages/local/v_utils/0.1.0
 git clone https://github.com/valeratrades/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0 # atm typst requires version provision when importing a package, so we always install as 0.1.0, irregardless of the actual version. 
 ```
 

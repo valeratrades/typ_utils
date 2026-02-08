@@ -1,3 +1,6 @@
+/// Custom math functions
+#let rw(x) = $"rw[" x "]"$
+
 /// Math notes preset - optimized settings for mathematical note-taking
 #let math_notes_prelude(doc) = [
   #set page(margin: (y: 0cm))
