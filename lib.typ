@@ -1,5 +1,8 @@
 /// Custom math functions
-#let rw(x) = $"rw[" x "]"$
+#let rw(x) = $op("rw") [#x]$
+#let DL = math.op("DL")
+#let sorry = math.op("sorry")
+#let goal = $tack.r$
 
 /// Math notes preset - optimized settings for mathematical note-taking
 #let math_notes_prelude(doc) = [
