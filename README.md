@@ -26,7 +26,7 @@ v_utils = { version = "0.1.0", registry = "local" }
 Import the library in your Typst documents:
 
 ```typst
-#import "@local/v_utils:0.1.0": math_notes_prelude; #show: math_notes_prelude
+#import("@local/v_utils:0.1.0"): *; #show: math_notes_prelude
 ```
 
 ## Available Presets
