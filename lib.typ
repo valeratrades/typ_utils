@@ -11,6 +11,7 @@
 #let rank = math.op("rank")
 #let Maj(x) = $op("Maj") (#x)$
 #let Open(x) = $op("Open") (#x)$
+#let el(x,y) = $(#x#h(0pt):#h(0pt)#y)$
 #let dist(x,y) = $op("dist") (#x, #y)$
 
 /// Recursively extract plain text from content
