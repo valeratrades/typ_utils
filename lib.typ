@@ -10,7 +10,7 @@
 #let ring = math.op("ring")
 #let rank = math.op("rank")
 #let Maj(x) = $op("Maj") (#x)$
-#let dist(x) = $op("dist") (#x)$
+#let dist(x,y) = $op("dist") (#x, #y)$
 
 /// Recursively extract plain text from content
 #let to-string(content) = {
