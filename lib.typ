@@ -1,9 +1,12 @@
+#import "@preview/quick-maths:0.2.1": shorthands
+
 /// Custom math functions
 #let rw(x) = $op("rw") [#x]$
 #let rel(x) = $op("rel") [#x]$
 #let simp(x) = $op("simp") [#x]$
 #let ball(x,y) = $op("ball") [#x, #y]$
 #let DL = math.op("DL")
+#let Prop = math.op("Prop")
 #let sorry = math.op("sorry")
 #let goal = $tack.r$
 #let span = math.op("span")
@@ -12,7 +15,18 @@
 #let Maj(x) = $op("Maj") (#x)$
 #let Open(x) = $op("Open") (#x)$
 #let el(x,y) = $(#x#h(0pt):#h(0pt)#y)$
+#let meq(x) = $eq.triple^(mod #x)$
+#let gcd(x,y) = $op("gcd") (#x, #y)$
 #let dist(x,y) = $op("dist") (#x, #y)$
+
+#let ig(body, var, lo: none, hi: none) = {
+  let sym = math.integral
+  if lo != none or hi != none {
+    sym = math.attach(sym, b: lo, t: hi)
+  }
+  $#sym #body dif #var$
+}
+
 
 /// Recursively extract plain text from content
 #let to-string(content) = {
@@ -88,6 +102,7 @@
 
 /// Math notes preset - optimized settings for mathematical note-taking
 #let math_notes_prelude(doc) = [
+  #show: shorthands.with(($..=$, $..#h(0pt)=#h(0pt)$))
   #set page(margin: (y: 0.2cm)) //Q: was `0cm` before, but I'm trying to make a pagebreak not be less then literally space between line_1\n\nline_2
   #show math.equation: set block(breakable: true)
   #set text(fallback: false)
