@@ -6,18 +6,35 @@
 #let simp(x) = $op("simp") [#x]$
 #let ball(x,y) = $op("ball") [#x, #y]$
 #let DL = math.op("DL")
+#let LD = math.op("LD")
+#let False = math.op("False")
+#let True = math.op("True")
 #let Prop = math.op("Prop")
 #let sorry = math.op("sorry")
+#let tab = $wide$
 #let goal = $tack.r$
+#let thus = $therefore$
+#let smul = $circle.filled.small$
 #let span = math.op("span")
+#let use = math.op("use")
 #let ring = math.op("ring")
-#let rank = math.op("rank")
+#let Im = math.op("Im") // by default they use a symbol for this, which is not commonly used in practice
+#let self = $bold("self")$
+#let grad = $attach(limits("grad"), t: stretch(arrow,size:#2.5em))$ // black magic to have a larger arrow
+#let rank = math.op("rank") //Q: not sure we need this when we have `rg` defined
+#let rg = math.op("rg")
+#let surj = $arrow.r.twohead$
+#let inj = $arrow.r.hook$
 #let Maj(x) = $op("Maj") (#x)$
+#let End(x) = $op("End") (#x)$
 #let Open(x) = $op("Open") (#x)$
 #let el(x,y) = $(#x#h(0pt):#h(0pt)#y)$
 #let meq(x) = $eq.triple^(mod #x)$
+#let mne(x) = $eq.triple.not^(mod #x)$
 #let gcd(x,y) = $op("gcd") (#x, #y)$
 #let dist(x,y) = $op("dist") (#x, #y)$
+#let def(x) = $space^(#x:=)$
+#let match(..args) = $"match" #{math.cases(..args)}$
 
 #let ig(body, var, lo: none, hi: none) = {
   let sym = math.integral
