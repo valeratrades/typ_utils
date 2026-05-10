@@ -25,8 +25,10 @@
 #let rg = math.op("rg")
 #let surj = $arrow.r.twohead$
 #let inj = $arrow.r.hook$
+#let after = $space circle.small space$
 #let Maj(x) = $op("Maj") (#x)$
-#let End(x) = $op("End") (#x)$
+//#let End(x) = $op("End") (#x)$
+#let End(x) = $cal(L)(#x, #x)$
 #let Open(x) = $op("Open") (#x)$
 #let el(x,y) = $(#x#h(0pt):#h(0pt)#y)$
 #let meq(x) = $eq.triple^(mod #x)$
@@ -145,4 +147,3 @@
 
   #doc
 ]
-
