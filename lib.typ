@@ -14,6 +14,7 @@
 #let tab = $wide$
 #let goal = $tack.r$
 #let thus = $therefore$
+#let hence = $therefore$
 #let smul = $circle.filled.small$
 #let span = math.op("span")
 #let use = math.op("use")
@@ -27,6 +28,8 @@
 #let inj = $arrow.r.hook$
 #let after = $space circle.small space$
 #let Maj(x) = $op("Maj") (#x)$
+#let ch(x) = $cosh(#x)$
+#let sh(x) = $sinh(#x)$
 //#let End(x) = $op("End") (#x)$
 #let End(x) = $cal(L)(#x, #x)$
 #let Open(x) = $op("Open") (#x)$
@@ -45,6 +48,17 @@
   }
   $#sym #body dif #var$
 }
+
+#let box(..lines) = rect(
+  stroke: 0.5pt,
+  radius: 3pt,
+  inset: 6pt,
+  stack(
+    dir: ttb,
+    spacing: 0.4em,
+    ..lines.pos().map(x => math.equation(x, block: false))
+  )
+)
 
 
 /// Recursively extract plain text from content
@@ -119,8 +133,38 @@
   (..prefix, seg).join(".")
 }
 
+/// Markdown-style sugar: `> ` blockquotes, `[label](url)` links, visible link styling
+#let md(doc) = {
+  show regex("^> .+"): it => block(
+    inset: (left: 1em),
+    stroke: (left: 2pt + gray),
+    text(fill: gray.darken(30%), it.text.slice(2)),
+  )
+
+  show link: set text(fill: blue.darken(20%))
+  show link: underline
+
+  // typst autolinks the bare URL, splitting the text node, so we stash the
+  // [label] in state, graft it onto the autolink, and eat the trailing paren
+  let md-lbl = state("md-lbl", none)
+  let md-eat = state("md-eat", false)
+  show regex("\\[[^\\]]+\\]\\("): it => md-lbl.update(it.text.slice(1, -2))
+  show link: it => context {
+    let l = md-lbl.get()
+    // autolinks only (body text == dest); reconstructed links have body == label, breaking recursion
+    if l == none or it.body.func() != text or it.body.text != str(it.dest) { it }
+    else { md-lbl.update(none) + md-eat.update(true) + link(it.dest, l) }
+  }
+  show regex("\\)"): it => context {
+    if md-eat.get() { md-eat.update(false) } else { it.text }
+  }
+
+  doc
+}
+
 /// Math notes preset - optimized settings for mathematical note-taking
 #let math_notes_prelude(doc) = [
+  #show: md
   #show: shorthands.with(($..=$, $..#h(0pt)=#h(0pt)$))
   #set page(margin: (y: 0.2cm)) //Q: was `0cm` before, but I'm trying to make a pagebreak not be less then literally space between line_1\n\nline_2
   #show math.equation: set block(breakable: true)
@@ -146,4 +190,10 @@
   }
 
   #doc
+
+  // trailing blank page so zathura doesn't jump on edits at the tip.
+  // Will still step forward when new page is created, but at least if I scroll below the current pos at the bottom manually, it won't jerk back on every save.
+  #pagebreak()
+  #hide[.]
 ]
+
