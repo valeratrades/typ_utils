@@ -133,8 +133,9 @@
   (..prefix, seg).join(".")
 }
 
-/// Markdown-style sugar: `> ` blockquotes, `[label](url)` links, visible link styling
-#let md(doc) = {
+/// Markdown-style sugar: `> ` blockquotes, `[label](url)` links, `![alt](path)` images, visible link styling.
+/// Package code can't resolve paths relative to the caller, so images need `#show: md.with(img: p => image(p))`
+#let md(doc, img: none) = {
   show regex("^> .+"): it => block(
     inset: (left: 1em),
     stroke: (left: 2pt + gray),
@@ -144,6 +145,11 @@
   show link: set text(fill: blue.darken(20%))
   show link: underline
 
+  show regex("!\\[[^\\]]*\\]\\([^)]+\\)"): it => {
+    let path = it.text.match(regex("\\(([^)]+)\\)$")).captures.first()
+    if img == none { panic("md: pass `img: p => image(p)` to render " + it.text) }
+    img(path)
+  }
   // typst autolinks the bare URL, splitting the text node, so we stash the
   // [label] in state, graft it onto the autolink, and eat the trailing paren
   let md-lbl = state("md-lbl", none)
@@ -157,6 +163,13 @@
   }
   show regex("\\)"): it => context {
     if md-eat.get() { md-eat.update(false) } else { it.text }
+  }
+
+  // non-URL dests aren't autolinked, so the whole [label](dest) survives as one
+  // text node; defined after the stash rule to win the same-position tie
+  show regex("\\[[^\\]]+\\]\\([^)]+\\)"): it => {
+    let m = it.text.match(regex("\\[([^\\]]+)\\]\\(([^)]+)\\)"))
+    link(m.captures.at(1), m.captures.at(0))
   }
 
   doc
