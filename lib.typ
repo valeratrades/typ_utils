@@ -6,6 +6,7 @@
 #let simp(x) = $op("simp") [#x]$
 #let ball(x,y) = $op("ball") [#x, #y]$
 #let DL = math.op("DL")
+#let Met = math.op([*Met*]) // for metric space
 #let LD = math.op("LD")
 #let False = math.op("False")
 #let True = math.op("True")
@@ -24,6 +25,7 @@
 #let grad = $attach(limits("grad"), t: stretch(arrow,size:#2.5em))$ // black magic to have a larger arrow
 #let rank = math.op("rank") //Q: not sure we need this when we have `rg` defined
 #let rg = math.op("rg")
+#let eps = $epsilon$
 #let surj = $arrow.r.twohead$
 #let inj = $arrow.r.hook$
 #let after = $space circle.small space$
@@ -40,6 +42,7 @@
 #let dist(x,y) = $op("dist") (#x, #y)$
 #let def(x) = $space^(#x:=)$
 #let match(..args) = $"match" #{math.cases(..args)}$
+#let ang(..a) = math.lr($chevron.l #a.pos().join($, $) chevron.r$) // explicit `lr`: auto-scaling doesn't reach into a nested equation
 
 #let ig(body, var, lo: none, hi: none) = {
   let sym = math.integral
