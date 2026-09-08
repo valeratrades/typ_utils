@@ -164,8 +164,10 @@
     if l == none or it.body.func() != text or it.body.text != str(it.dest) { it }
     else { md-lbl.update(none) + md-eat.update(true) + link(it.dest, l) }
   }
-  show regex("\\)"): it => context {
-    if md-eat.get() { md-eat.update(false) } else { it.text }
+  // must not match a lone `)`: in math that's the closing delimiter, and any rule firing on it costs its stretchiness.
+  // so a link ending a paragraph keeps its `)` - the two are indistinguishable at that point
+  show regex("(?s)^\\)."): it => context {
+    if md-eat.get() { md-eat.update(false) + it.text.slice(1) } else { it }
   }
 
   // non-URL dests aren't autolinked, so the whole [label](dest) survives as one
