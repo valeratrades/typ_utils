@@ -30,6 +30,7 @@
 #let inj = $arrow.r.hook$
 #let after = $space circle.small space$
 #let Maj(x) = $op("Maj") (#x)$
+#let Sub(x) = $op("Sub") (#x)$
 #let ch(x) = $cosh(#x)$
 #let sh(x) = $sinh(#x)$
 //#let End(x) = $op("End") (#x)$
@@ -150,6 +151,10 @@
 
   show link: set text(fill: blue.darken(20%))
   show link: underline
+
+  // math mode drops `super`, so the raise is explicit; the inner rule strips the one text mode adds
+  set footnote(numbering: n => text(size: 0.7em, baseline: -0.35em, fill: blue.darken(20%), str(n)))
+  show footnote: it => { show super: s => s.body; it }
 
   show regex("!\\[[^\\]]*\\]\\([^)]+\\)"): it => {
     let path = it.text.match(regex("\\(([^)]+)\\)$")).captures.first()
