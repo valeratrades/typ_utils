@@ -37,6 +37,11 @@ Optimized settings for mathematical note-taking:
 - Breakable math equations
 - Strict text fallback disabled
 
+## Scripts
+
+### `scripts/list_titles.py FILE.typ...`
+Show rules can't tell a newline from a space, so this rewrites source in place: a list item's first line gets a trailing `\` when indented content follows it, keeping the title on its own line.
+
 ## Adding New Presets
 
 Edit `lib.typ` and add new functions following the existing pattern:
