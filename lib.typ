@@ -31,6 +31,7 @@
 #let after = $space circle.small space$
 #let Maj(x) = $op("Maj") (#x)$
 #let Sub(x) = $op("Sub") (#x)$
+#let GL(x) = $op("GL") (#x)$
 #let ch(x) = $cosh(#x)$
 #let sh(x) = $sinh(#x)$
 //#let End(x) = $op("End") (#x)$
