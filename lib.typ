@@ -225,6 +225,18 @@
   #show: shorthands.with(($..=$, $..#h(0pt)=#h(0pt)$))
   #set page(margin: (y: 0.2cm)) //Q: was `0cm` before, but I'm trying to make a pagebreak not be less then literally space between line_1\n\nline_2
   #show math.equation: set block(breakable: true)
+  // multi-line inline math sits on its last row's baseline by default; move it to the first row's
+  #show math.equation.where(block: false): it => {
+    let kids = if it.body.has("children") { it.body.children } else { (it.body,) }
+    let i = kids.position(k => k.func() == linebreak)
+    if i == none { return it }
+    context {
+      // depth below baseline: a 100pt box pins the ascent, text edges at baseline contribute nothing
+      let desc = c => measure(text(top-edge: "baseline", bottom-edge: "baseline", [#c#std.box(height: 100pt)])).height - 100pt
+      let first = math.equation(block: false, kids.slice(0, i).join())
+      std.box(baseline: measure(it).height - desc(it) - (measure(first).height - desc(first)), it)
+    }
+  }
   #set text(fallback: false)
 
   // auto-gen hierarchical heading labels:
