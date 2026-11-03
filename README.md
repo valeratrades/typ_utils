@@ -26,16 +26,19 @@ v_utils = { version = "0.1.0", registry = "local" }
 Import the library in your Typst documents:
 
 ```typst
-#import("@local/v_utils:0.1.0"): *; #show: math_notes_prelude
+#import("@local/v_utils:0.1.0"): *; #show: prelude
 ```
 
 ## Available Presets
 
-### `math_notes_prelude(doc)`
-Optimized settings for mathematical note-taking:
-- Zero vertical margins
-- Breakable math equations
-- Strict text fallback disabled
+### `prelude(doc, img: none)` - `lib.typ`
+Everything below, plus auto-generated hierarchical heading labels (`= Ex I` / `== 1.` / `=== a)` → `@ex-i.1.a`) and a trailing blank page.
+
+### `math_notes_prelude(doc)` - `math.typ`
+Math shorthands, breakable equations, multi-line inline math on its first row's baseline. Custom math functions live in the same file.
+
+### `md_parity_prelude(doc, img: none)` - `md.typ`
+Markdown-style sugar: `> ` quotes, `---` rules, `[label](url)` links, `![alt](path)` images (needs `img: p => image(p)`).
 
 ## Scripts
 
