@@ -9,6 +9,7 @@
 #let DL = math.op("DL")
 #let Met = math.op([*Met*]) // for metric space
 #let LD = math.op("LD")
+#let Vect = math.op("Vect")
 #let False = math.op("False")
 #let True = math.op("True")
 #let Prop = math.op("Prop")
