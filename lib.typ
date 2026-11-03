@@ -89,15 +89,12 @@
       #figure(kind: "heading", supplement: none, numbering: "1", caption: it.body)[] #label(key)
     ]
   }
+  // name refs after their tag, unless typst renders them natively (citations, anything numbered)
   #show ref: it => {
     let el = it.element
-    if el != none and el.func() == figure and el.kind == "heading" {
-      link(el.location(), el.caption.body)
-    } else {
-      it
-    }
+    let native = el == none or (el.func() != figure or el.kind != "heading") and el.at("numbering", default: none) != none
+    if native { it } else { link(it.target, str(it.target).replace("-", " ")) }
   }
-  #show ref: it => link(it.target, str(it.target).replace("-", " ")) // when rendering refs, gen name from tag
 
   #doc
 
