@@ -6,27 +6,17 @@ Shared settings and presets for Typst projects.
 
 This package is installed locally (not published to Typst Universe).
 
+Each tag is installed as a frozen snapshot (typst rejects a package whose `typst.toml` version differs from the imported one):
+
 ```sh
-mkdir -p ~/.local/share/typst/packages/local/v_utils/
-rm -rf ~/.local/share/typst/packages/local/v_utils/0.1.0
-git clone https://github.com/valeratrades/typ_utils.git ~/.local/share/typst/packages/local/v_utils/0.1.0 # atm typst requires version provision when importing a package, so we always install as 0.1.0, irregardless of the actual version. 
-```
-
-### Add to your project
-
-In your project's `typst.toml`:
-
-```toml
-[dependencies]
-v_utils = { version = "0.1.0", registry = "local" }
+V=0.2.0; D=~/.local/share/typst/packages/local/v_utils/$V
+mkdir -p $D && git archive v$V | tar -x -C $D
 ```
 
 ## Usage
 
-Import the library in your Typst documents:
-
 ```typst
-#import("@local/v_utils:0.1.0"): *; #show: prelude
+#import "@local/v_utils:0.2.0": *; #show: prelude
 ```
 
 ## Available Presets
