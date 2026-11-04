@@ -45,7 +45,13 @@
 #let gcd(x,y) = $op("gcd") (#x, #y)$
 #let dist(x,y) = $op("dist") (#x, #y)$
 #let def(x) = $space^(#x:=)$
-#let match(..args) = $"match" #{math.cases(..args)}$
+#let match(..arms) = math.display(math.cases(gap: 0.6em, ..arms.pos().map(arm => {
+  let kids = arm.children
+  let arrows = kids.enumerate().filter(((_, k)) => k == $->$.body).map(((i, _)) => i)
+  assert(arrows.len() == 1, message: "match arm must be `case -> then`, got: " + repr(arm))
+  let i = arrows.first()
+  $#kids.slice(0, i).join() & quad -> quad & #kids.slice(i + 1).join()$
+})))
 #let ang(..a) = math.lr($chevron.l #a.pos().join($, $) chevron.r$) // explicit `lr`: auto-scaling doesn't reach into a nested equation
 
 #let ig(body, var, lo: none, hi: none) = {
