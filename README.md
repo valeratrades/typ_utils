@@ -14,6 +14,16 @@ $x ..= 2$ -- see @ex-i.1.a
 > quoted, [with a link](https://typst.app)
 ```
 
+## Installation (nix)
+
+```nix
+inputs.typ_utils = { url = "github:valeratrades/typ_utils?ref=v0.2.0"; flake = false; };
+
+typst = pkgs.typst.withPackages (p: [
+  (pkgs.buildTypstPackage { pname = "v-utils"; version = "0.2.0"; src = typ_utils; typstDeps = [ p.quick-maths_0_2_1 ]; })
+]);
+```
+
 ## Presets
 
 ### `prelude(doc, img: none)` - `lib.typ`
