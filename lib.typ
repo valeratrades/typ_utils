@@ -1,5 +1,6 @@
 #import "math.typ": *
 #import "md.typ": *
+#import "html.typ": *
 
 /// Recursively extract plain text from content
 #let to-string(content) = {

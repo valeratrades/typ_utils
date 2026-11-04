@@ -3,7 +3,7 @@
 Presets for writing math notes: math shorthands and functions, auto-generated hierarchical heading labels, and markdown-style sugar.
 
 ```typst
-#import "@preview/v-utils:0.2.0": *
+#import "@preview/v-utils:0.3.0": *
 #show: prelude
 
 = Ex I
@@ -16,12 +16,12 @@ $x ..= 2$ -- see @ex-i.1.a
 
 ## Installation (nix)
 
-```nix
-inputs.typ_utils = { url = "github:valeratrades/typ_utils?ref=v0.2.0"; flake = false; };
+Not on Typst Universe; [v_flakes](https://github.com/valeratrades/v_flakes)' typ module vendors it from source:
 
-typst = pkgs.typst.withPackages (p: [
-  (pkgs.buildTypstPackage { pname = "v-utils"; version = "0.2.0"; src = typ_utils; typstDeps = [ p.quick-maths_0_2_1 ]; })
-]);
+```nix
+inputs.typ_utils = { url = "github:valeratrades/typ_utils?ref=v0.3.0"; flake = false; };
+
+typ = v_flakes.typ { inherit pkgs; src = ./.; extraPackages = [ typ_utils ]; };
 ```
 
 ## Presets
@@ -35,9 +35,19 @@ Math shorthands, breakable equations, multi-line inline math on its first row's 
 ### `md_parity_prelude(doc, img: none)` - `md.typ`
 Markdown-style sugar: `> ` quotes, `---` rules, `[label](url)` links, `![alt](path)` images (needs `img: p => image(p)`).
 
+### `html-paper(template, style: auto, ..args, body)` - `html.typ`
+HTML export for a paper template (e.g. `charged-ieee`), whose floated title block and run-in headings HTML export drops: emits `<h1>` title, authors, and `<h2>`..`<h6>` numbered headings on the HTML target; paged output is the template's own. `style`: `auto` for the bundled `paper.css` (one reading measure, follows `prefers-color-scheme`), a css string, or `none`.
+
+```typst
+#show: html-paper.with(ieee, title: [..], authors: (..), abstract: [..])
+```
+
+### `framed(body)` - `html.typ`
+Renders `body` (cetz, plots) to inline SVG on the HTML target, as-is on paged.
+
 ## Scripts
 
-[`scripts/list_titles.py FILE.typ...`](https://github.com/valeratrades/typ_utils/blob/v0.2.0/scripts/list_titles.py): show rules can't tell a newline from a space, so this rewrites source in place: a list item's first line gets a trailing `\` when indented content follows it, keeping the title on its own line.
+[`scripts/list_titles.py FILE.typ...`](https://github.com/valeratrades/typ_utils/blob/v0.3.0/scripts/list_titles.py): show rules can't tell a newline from a space, so this rewrites source in place: a list item's first line gets a trailing `\` when indented content follows it, keeping the title on its own line.
 
 ## License
 
