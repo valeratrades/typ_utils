@@ -31,6 +31,7 @@ Everything below, plus auto-generated hierarchical heading labels (`= Ex I` / `=
 
 ### `math_notes_prelude(doc)` - `math.typ`
 Math shorthands, breakable equations, multi-line inline math on its first row's baseline. Custom math functions live in the same file.
+Notation lints from `style.typ` render the offending math in red, e.g. a relation's point written above it (`in^0` instead of `in_0`).
 
 ### `md_parity_prelude(doc, img: none)` - `md.typ`
 Markdown-style sugar: `> ` quotes, `---` rules, `[label](url)` links, `![alt](path)` images (needs `img: p => image(p)`).
