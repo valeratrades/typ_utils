@@ -75,6 +75,13 @@
 }
 
 #let prelude(doc, img: none) = [
+  // name refs after their tag, unless typst renders them natively (citations, anything numbered); outside md so its `[label](@ref)` graft runs first
+  #show ref: it => {
+    let el = it.element
+    let native = el == none or (el.func() != figure or el.kind != "heading") and el.at("numbering", default: none) != none
+    if native { it } else { link(it.target, str(it.target).replace("-", " ")) }
+  }
+
   #show: md-parity-prelude.with(img: img)
   #show: math-notes-prelude
   #set page(margin: (y: 0.2cm)) //Q: was `0cm` before, but I'm trying to make a pagebreak not be less then literally space between line_1\n\nline_2
@@ -90,13 +97,6 @@
       #figure(kind: "heading", supplement: none, numbering: "1", caption: it.body)[] #label(key)
     ]
   }
-  // name refs after their tag, unless typst renders them natively (citations, anything numbered)
-  #show ref: it => {
-    let el = it.element
-    let native = el == none or (el.func() != figure or el.kind != "heading") and el.at("numbering", default: none) != none
-    if native { it } else { link(it.target, str(it.target).replace("-", " ")) }
-  }
-
   #doc
 
   // trailing blank page so zathura doesn't jump on edits at the tip.

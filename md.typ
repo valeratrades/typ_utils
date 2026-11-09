@@ -53,8 +53,8 @@
     if img == none { panic("md: pass `img: p => image(p)` to render " + it.text) }
     img(path)
   }
-  // typst autolinks the bare URL, splitting the text node, so we stash the
-  // [label] in state, graft it onto the autolink, and eat the trailing paren
+  // typst autolinks the bare URL (and parses `@ref`), splitting the text node, so we
+  // stash the [label] in state, graft it onto the link/ref, and eat the trailing paren
   let md-lbl = state("md-lbl", none)
   let md-eat = state("md-eat", false)
   show regex("\\[[^\\]]+\\]\\("): it => md-lbl.update(it.text.slice(1, -2))
@@ -64,10 +64,15 @@
     if l == none or it.body.func() != text or it.body.text != str(it.dest) { it }
     else { md-lbl.update(none) + md-eat.update(true) + link(it.dest, l) }
   }
+  show ref: it => context {
+    let l = md-lbl.get()
+    if l == none { it } else { md-lbl.update(none) + md-eat.update(true) + link(it.target, l) }
+  }
   // must not match a lone `)`: in math that's the closing delimiter, and any rule firing on it costs its stretchiness.
   // so a link ending a paragraph keeps its `)` - the two are indistinguishable at that point
+  // reset unconditionally: output structure varying with state keeps layout from converging
   show regex("(?s)^\\)."): it => context {
-    if md-eat.get() { md-eat.update(false) + it.text.slice(1) } else { it }
+    md-eat.update(false) + if md-eat.get() { it.text.slice(1) } else { it }
   }
 
   // non-URL dests aren't autolinked, so the whole [label](dest) survives as one
