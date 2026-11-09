@@ -30,6 +30,8 @@
 #let rg = math.op("rg")
 #let eps = $epsilon$
 #let ERR = $overline(RR)$ // ℝ ∪ {-∞, +∞}
+#let ENN = $overline(NN)$ // ℕ ∪ {∞}
+// ℂ ∪ {∞} is `hat(CC)` (Lean: `OnePoint ℂ`): a single unordered ∞, so not an `overline` sibling
 #let surj = $arrow.r.twohead$
 #let inj = $arrow.r.hook$
 #let after = $space circle.small space$
