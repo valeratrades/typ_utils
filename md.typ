@@ -55,23 +55,17 @@
     if img == none { panic("md: pass `img: p => image(p)` to render " + it.text) }
     img(path)
   }
-  // typst autolinks the bare URL (and parses `@ref`), splitting the text node, so we
-  // stash the [label] in state, graft it onto the link/ref, and eat the trailing paren
-  let md-lbl = state("md-lbl", none)
-  let md-eat = state("md-eat", false)
-  show regex("\\[[^\\]]+\\]\\("): it => md-lbl.update(it.text.slice(1, -2))
-  show link: it => context {
-    let l = md-lbl.get()
-    // autolinks only (body text == dest); reconstructed links have body == label, breaking recursion
-    if l == none or it.body.func() != text or it.body.text != str(it.dest) { it }
-    else { md-lbl.update(none) + md-eat.update(true) + link(it.dest, l) }
+  // typst autolinks the bare URL (and parses `@ref`), splitting `[label](dest)` into sibling nodes no show rule sees together,
+  // so the stash rule stores the label, the link/ref grafts it, and the trailing paren gets eaten.
+  // Every update is unconditional: one conditioned on a `get()` reads the previous layout iteration, and leftovers then graft onto unrelated refs.
+  let md = state("md", (lbl: none, eat: false))
+  show regex("\\[[^\\]]+\\]\\("): it => md.update((lbl: it.text.slice(1, -2), eat: false))
+  // autolinks only (body text == dest); grafted links have body == label, so they pass untouched
+  show link: it => if it.body.func() != text or it.body.text != str(it.dest) { it } else {
+    context { let l = md.get().lbl; if l == none { it } else { link(it.dest, l) } } + md.update(s => (lbl: none, eat: s.lbl != none))
   }
-  show ref: it => context {
-    let l = md-lbl.get()
-    if l == none { it } else { md-lbl.update(none) + md-eat.update(true) + link(it.target, l) }
-  }
-  // reset unconditionally: output structure varying with state keeps layout from converging
-  show regex("^\\)"): it => context { md-eat.update(false) + if md-eat.get() { none } else { it } }
+  show ref: it => context { let l = md.get().lbl; if l == none { it } else { link(it.target, l) } } + md.update(s => (lbl: none, eat: s.lbl != none))
+  show regex("^\\)"): it => context { if md.get().eat { none } else { it } } + md.update(s => (..s, eat: false))
 
   // non-URL dests aren't autolinked, so the whole [label](dest) survives as one
   // text node; defined after the stash rule to win the same-position tie
