@@ -29,6 +29,7 @@
 #let rank = math.op("rank") //Q: not sure we need this when we have `rg` defined
 #let rg = math.op("rg")
 #let eps = $epsilon$
+#let ERR = $overline(RR)$ // ℝ ∪ {-∞, +∞}
 #let surj = $arrow.r.twohead$
 #let inj = $arrow.r.hook$
 #let after = $space circle.small space$
