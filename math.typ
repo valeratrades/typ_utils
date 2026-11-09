@@ -2,7 +2,7 @@
 #import "style.typ"
 
 /// Custom math functions
-//Q: should I nest it in `math_notes_prelude` ?
+//Q: should I nest it in `math-notes-prelude` ?
 #let rw(x) = $op("rw") [#x]$
 #let rel(x) = $op("rel") [#x]$
 #let simp(x) = $op("simp") [#x]$
@@ -74,7 +74,7 @@
   )
 )
 
-#let math_notes_prelude(doc) = [
+#let math-notes-prelude(doc) = [
   #show: shorthands.with(($..=$, $..#h(0pt)=#h(0pt)$))
   #show: style.lints
   #show math.equation: set block(breakable: true)
