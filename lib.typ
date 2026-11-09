@@ -36,7 +36,7 @@
 /// Sanitize heading text into a valid label segment:
 /// lowercase, spaces→`-`, strip trailing non-alnum, remove invalid label chars
 #let sanitize-key(s) = {
-  let s = lower(s.trim())
+  let s = lower(s.trim()).replace(regex("\\[([^\\]]+)\\]\\([^)]+\\)"), m => m.captures.at(0)) // md links (md.typ) key on their label, not dest
   let chars = s.clusters()
   while chars.len() > 0 {
     if chars.last().match(regex("^[a-z0-9]$")) != none { break }
