@@ -48,8 +48,8 @@
 #let def(x) = $space^(#x:=)$
 #let match(..arms) = math.display(math.cases(gap: 0.6em, ..arms.pos().map(arm => {
   let kids = arm.children
-  let arrows = kids.enumerate().filter(((_, k)) => k == $->$.body).map(((i, _)) => i)
-  assert(arrows.len() == 1, message: "match arm must be `case -> then`, got: " + repr(arm))
+  let arrows = kids.enumerate().filter(((_, k)) => k in ($->$.body, $=>$.body)).map(((i, _)) => i)
+  assert(arrows.len() == 1, message: "match arm must be `case -> then` or `case => then`, got: " + repr(arm))
   let i = arrows.first()
   $#kids.slice(0, i).join() & quad -> quad & #kids.slice(i + 1).join()$
 })))
