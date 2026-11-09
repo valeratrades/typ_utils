@@ -2,13 +2,13 @@
 
 #let plain(c) = if type(c) == str { c } else if type(c) == content {
   if c.has("text") { plain(c.text) } else { c.fields().values().map(plain).join(default: "") }
-} else if type(c) == array { c.map(plain).join(default: "") } else { "" }
+} else if type(c) == array { c.map(plain).join(default: "") } else if type(c) == label { "@" + str(c) } else { "" }
 
-/// Where a relation holds (`0`, `oo`, `0^+`, `n -> oo`, bare variable on the left) goes under it: `in_0`, `~_oo`, `->_(n->oo)`. Reasons for a step stay above: `=^"L'Hôpital"`.
+/// Where a relation holds (`0`, `oo`, `0^+`, `n -> oo`) goes under it: `in_0`, `~_oo`, `->_(n->oo)`. Reasons for a step stay above: `=^"L'Hôpital"`, `->^(u_n -> 0 @ref)`; prose or a ref is what makes it a reason.
 #let lints(doc) = {
   show math.attach: it => {
     let t = it.at("t", default: none)
-    let point = t != none and plain(it.base) in ("=", "∈", "∼", "→", "≈") and plain(t).match(regex("^([+−-]?(\d+|∞)[+−-]?|\p{L}→.+)$")) != none
+    let point = t != none and plain(it.base) in ("=", "∈", "∼", "→", "≈") and plain(t).match(regex("^([+−-]?(\d+|∞)[+−-]?|[^@ ]*→[^@ ]*)$")) != none
     if point { text(fill: red, it) } else { it }
   }
   doc
