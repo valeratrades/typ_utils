@@ -9,7 +9,9 @@
   show par: it => {
     let space = [ ].func()
     let ch = if it.body.func() == [].func() { it.body.children } else { (it.body,) }
-    if ch.first().func() != text or not ch.first().text.starts-with("> ") { return it }
+    // `> $x$` splits into `>`, space, equation, so a bare `>` must also open a quote
+    let head = ch.first()
+    if head.func() != text or not (head.text.starts-with("> ") or (head.text == ">" and ch.len() > 1)) { return it }
     let lines = ()
     let prev-space = true
     for c in ch {
