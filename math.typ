@@ -57,6 +57,11 @@
   $#kids.slice(0, i).join() & quad -> quad & #kids.slice(i + 1).join()$
 })))
 #let ang(..a) = math.lr($chevron.l #a.pos().join($, $) chevron.r$) // explicit `lr`: auto-scaling doesn't reach into a nested equation
+// zero-width cell: overhangs right of its `&` without widening the alignment column
+#let hang(body) = context {
+  let c = $display(body)$
+  std.box(width: 0pt, align(left, std.box(width: measure(c).width, c)))
+}
 
 #let ig(body, var, lo: none, hi: none) = {
   let sym = math.integral
