@@ -65,7 +65,15 @@
     context { let l = md.get().lbl; if l == none { it } else { link(it.dest, l) } } + md.update(s => (lbl: none, eat: s.lbl != none))
   }
   show ref: it => context { let l = md.get().lbl; if l == none { it } else { link(it.target, l) } } + md.update(s => (lbl: none, eat: s.lbl != none))
-  show regex("^\\)"): it => context { if md.get().eat { none } else { it } } + md.update(s => (..s, eat: false))
+  let eat-paren(rest) = context { if md.get().eat { rest } else { ")" + rest } } + md.update(s => (..s, eat: false))
+  // a lone `)` is also math's closing delimiter, and any rule firing on it costs its stretchiness; so the lone one is caught at `par` level, which math never reaches
+  show regex("(?s)^\\)."): it => eat-paren(it.text.slice(1))
+  // shortcut: paragraph-less containers (tight list items, headings, cells) keep a link's trailing lone `)`
+  show par: it => {
+    let ch = if it.body.func() == [].func() { it.body.children } else { (it.body,) }
+    if ch.last().func() != text or ch.last().text != ")" { return it }
+    par(ch.slice(0, -1).join() + eat-paren(""))
+  }
 
   // non-URL dests aren't autolinked, so the whole [label](dest) survives as one
   // text node; defined after the stash rule to win the same-position tie
