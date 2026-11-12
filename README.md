@@ -28,6 +28,7 @@ typ = v_flakes.typ { inherit pkgs; src = ./.; extraPackages = [ typ_utils ]; };
 
 ### `prelude(doc, img: none)` - `lib.typ`
 Everything below, plus auto-generated hierarchical heading labels (`= Ex I` / `== 1.` / `=== a)` → `@ex-i.1.a`) and a trailing blank page.
+Refs to them render the key prefix shared with the enclosing heading as `::` — under `ex-i.1`, `@ex-i.2` shows `::2`.
 
 ### `math-notes-prelude(doc)` - `math.typ`
 Math shorthands, breakable equations, multi-line inline math on its first row's baseline. Custom math functions live in the same file.

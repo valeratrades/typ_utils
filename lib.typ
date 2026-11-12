@@ -79,7 +79,15 @@
   #show ref: it => {
     let el = it.element
     let native = el == none or (el.func() != figure or el.kind != "heading") and el.at("numbering", default: none) != none
-    if native { it } else { link(it.target, str(it.target).replace("-", " ")) }
+    if native { it } else { context {
+      let scopes = query(figure.where(kind: "heading").before(here()))
+      let scope = if scopes == () { () } else { str(scopes.last().label).split(".") }
+      let segs = str(it.target).split(".")
+      let n = 0
+      while n < calc.min(scope.len(), segs.len() - 1) and scope.at(n) == segs.at(n) { n += 1 } // key prefix shared with the current heading becomes `::`; the target's own tail always shows
+      let name = segs.slice(n).join(".").replace("-", " ")
+      link(it.target, if n == 0 { name } else { "::" + name })
+    } }
   }
 
   #show: md-parity-prelude.with(img: img)
