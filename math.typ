@@ -54,7 +54,7 @@
   let arrows = kids.enumerate().filter(((_, k)) => k in ($->$.body, $=>$.body)).map(((i, _)) => i)
   assert(arrows.len() == 1, message: "match arm must be `case -> then` or `case => then`, got: " + repr(arm))
   let i = arrows.first()
-  $#kids.slice(0, i).join() & quad -> quad & #kids.slice(i + 1).join()$
+  $display(#kids.slice(0, i).join()) & quad -> quad & display(#kids.slice(i + 1).join())$ // cases shrinks its cells to inline size; LaTeX's doesn't
 })))
 #let ang(..a) = math.lr($chevron.l #a.pos().join($, $) chevron.r$) // explicit `lr`: auto-scaling doesn't reach into a nested equation
 // zero-width cell: overhangs right of its `&` without widening the alignment column
@@ -90,7 +90,7 @@
   #show math.equation.where(block: true): it => {
     let kids = if it.body.has("children") { it.body.children } else { (it.body,) }
     let cols = kids.split(linebreak()).map(row => row.filter(k => repr(k.func()) == "align-point").len()) // align-point isn't exported
-    if calc.max(..cols) < 2 { set align(start); it } else { it }
+    if calc.max(..cols) < 2 { align(start, block(above: 0.6em, breakable: true, it)) } else { it } // tight above: it continues the line that introduces it
   }
   // multi-line inline math sits on its last row's baseline by default; move it to the first row's
   #show math.equation.where(block: false): it => {
