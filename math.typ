@@ -86,6 +86,12 @@
   #show: shorthands.with(($..=$, $..#h(0pt)=#h(0pt)$))
   #show: style.lints
   #show math.equation: set block(breakable: true)
+  // centred only once rows sync on 2+ columns; a single chain reads easier from the margin
+  #show math.equation.where(block: true): it => {
+    let kids = if it.body.has("children") { it.body.children } else { (it.body,) }
+    let cols = kids.split(linebreak()).map(row => row.filter(k => repr(k.func()) == "align-point").len()) // align-point isn't exported
+    if calc.max(..cols) < 2 { set align(start); it } else { it }
+  }
   // multi-line inline math sits on its last row's baseline by default; move it to the first row's
   #show math.equation.where(block: false): it => {
     let kids = if it.body.has("children") { it.body.children } else { (it.body,) }
