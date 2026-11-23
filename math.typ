@@ -11,6 +11,7 @@
 #let Met = math.op([*Met*]) // for metric space
 #let LD = math.op("LD")
 #let Vect = math.op("Vect")
+#let GL = math.op("GL")
 #let False = math.op("False")
 #let True = math.op("True")
 #let Prop = math.op("Prop")
