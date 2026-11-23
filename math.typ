@@ -13,7 +13,8 @@
 #let Vect = math.op("Vect")
 #let GL = math.op("GL")
 #let Mat = math.op("Mat")
-#let diag = math.op("diag")
+#let diag(..xs) = $op("diag")(#xs.pos().join($, $))$
+#let tr(x) = $op("tr")(#x)$ // a function, so bare `tr` renders as its repr instead of passing silently
 #let False = math.op("False")
 #let True = math.op("True")
 #let Prop = math.op("Prop")
